@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bath Talk | 发现伊涅斯</title>
+    <style>
+        :root {
+            --primary-color: #5a7d7c;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+            --text-sub: #7f8c8d;
+        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px; -webkit-font-smoothing: antialiased; }
+        .container { max-width: 500px; margin: 0 auto; background: var(--card-bg); padding: 30px 20px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        h1 { color: var(--primary-color); text-align: center; font-size: 24px; margin-bottom: 8px; letter-spacing: 1px; }
+        .subtitle { text-align: center; color: var(--text-sub); font-size: 13px; margin-bottom: 30px; }
+        .intro { background: #f0f4f4; padding: 15px; border-radius: 12px; font-size: 14px; line-height: 1.6; margin-bottom: 30px; border-left: 4px solid var(--primary-color); }
+        .nickname-box { background: #fff9f2; padding: 15px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #ffeada; }
+        .question-item { margin-bottom: 25px; }
+        label { display: block; font-weight: 600; margin-bottom: 10px; font-size: 15px; line-height: 1.4; }
+        label span { color: var(--primary-color); font-style: italic; margin-right: 5px; }
+        textarea, input[type="text"] { width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 12px; font-size: 14px; box-sizing: border-box; background: #fafafa; -webkit-appearance: none; }
+        textarea:focus, input[type="text"]:focus { outline: none; border-color: var(--primary-color); background: #fff; }
+        textarea { min-height: 90px; resize: none; }
+        .btn-submit { width: 100%; padding: 16px; background: var(--primary-color); color: white; border: none; border-radius: 50px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 20px; box-shadow: 0 4px 12px rgba(90,125,124,0.3); }
+        .footer { text-align: center; margin-top: 30px; font-size: 11px; color: #bdc3c7; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Bath Talk</h1>
+    <div class="subtitle">卸下防备，看见真实的伊涅斯</div>
+    
+    <div class="intro">
+        亲爱的，我是伊涅斯。这是一个关于“深度了解”的实验。请凭直觉回答以下问题，你的答案将帮我拼凑出最真实的个人天赋。
+    </div>
+
+    <form id="surveyForm">
+        <div class="nickname-box">
+            <label>💬 你的昵称（或填写匿名）</label>
+            <input type="text" id="nickname" placeholder="如何称呼你..." required>
+        </div>
+
+        <div id="questionsList"></div>
+
+        <button type="button" class="btn-submit" onclick="copyAnswers()">完成对话，复制结果</button>
+    </form>
+
+    <div class="footer">© Ines's Bath Talk Project<br>点击后请手动粘贴发送给我</div>
+</div>
+
+<script>
+    const questions = [
+        "“如果用一个形容词或者一种味道来形容你初见我时的感受，那会是什么？”",
+        "“在你不开心或者遇到难题时，你会因为我的什么特质而想到找我聊天？”",
+        "“你觉得我身上哪种‘磁场’是别人模仿不来的？”",
+        "“如果我要开一家深夜食堂，你觉得我最适合给客人提供什么样的服务（不仅仅是食物）？”",
+        "“你觉得我写文章（公众号）的时候，字里行间透出的一种‘骨子里’的情绪是什么？”",
+        "“回想一下，哪一次我做成某件事让你觉得‘哇，她在这方面真是有两把刷子’？”",
+        "“如果我们要一起去荒岛求生，你觉得我最重要的贡献会是什么？”",
+        "“你觉得我处理复杂信息或情感的能力，属于‘手术刀式’的精准，还是‘春雨式’的滋润？”",
+        "“有没有哪次你觉得我‘浪费’了自己的某个才华？你希望看到我更多地展示哪一面？”",
+        "“如果我消失一年去闭关修炼一个技能，你觉得一年后我会带着什么惊喜回来？”",
+        "“你觉得我的文字或说话方式，最能精准击中哪一类人的心？”",
+        "“如果‘Bath Talk’是一个具体的物理空间，你觉得走进来的读者应该是带着什么样的困惑进去，带着什么样的心情出来？”",
+        "“你认为我身上哪种‘怪癖’或‘坚持’，其实是我最具竞争力的个人标签？”",
+        "“如果我要出一本书，你觉得书名里必须包含哪两个关键词，才最像‘伊涅斯’？”",
+        "“基于你对我的了解，你觉得我做账号最该坚持的‘必杀技’是什么，而最该避开的‘坑’又是什么？”"
+    ];
+
+    const listContainer = document.getElementById('questionsList');
+    questions.forEach((q, i) => {
+        const item = document.createElement('div');
+        item.className = 'question-item';
+        item.innerHTML = `<label><span>${i + 1}.</span> ${q}</label>
+                          <textarea class="ans" placeholder="听听你的真心话..."></textarea>`;
+        listContainer.appendChild(item);
+    });
+
+    function copyAnswers() {
+        const name = document.getElementById('nickname').value || "神秘友人";
+        const answers = document.querySelectorAll('.ans');
+        let text = `🛁 Bath Talk 访谈反馈\n来自：${name}\n------------------------\n`;
+
+        questions.forEach((q, i) => {
+            const a = answers[i].value.trim() || "未填写";
+            text += `${i + 1}. ${q}\n答：${a}\n\n`;
+        });
+
+        const tempInput = document.createElement("textarea");
+        tempInput.value = text;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        tempInput.setSelectionRange(0, 99999); // 对移动端优化
+
+        try {
+            document.execCommand('copy');
+            alert("✅ 复制成功！\n\n请现在回到微信对话框，“粘贴”发送给我即可。");
+        } catch (err) {
+            alert("复制失败，请手动全选文字发送。");
+        }
+        document.body.removeChild(tempInput);
+    }
+</script>
+
+</body>
+</html>
